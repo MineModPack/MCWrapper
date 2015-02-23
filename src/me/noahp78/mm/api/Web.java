@@ -14,12 +14,12 @@ public class Web {
 	private static String pack = "packs/";
 	
 	
-	private static String base = url + ApiVersion;
-	private static String modurl = base + mod;
-	private static String packurl = base+pack;
+	public static String base = url + ApiVersion;
+	public static String modurl = base + mod;
+	public static String packurl = base+pack;
 	
 	
-	public static void getResult(String urls) throws Exception{
+	public static String getResult(String urls) throws Exception{
 		String result = "";
 		URL oracle = new URL(urls);
         BufferedReader in = new BufferedReader(
@@ -27,10 +27,10 @@ public class Web {
 
         String inputLine;
         while ((inputLine = in.readLine()) != null){
-            System.out.println(inputLine);
             result = result+inputLine;
         }
         in.close();
+        return result;
 	}
 	
 	

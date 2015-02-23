@@ -22,14 +22,19 @@ public class ModManager {
 			}else{
 				Log.debug("Found (unused) argument: " +  a);
 			}
-			
-		
 		}
 		//Simple check to see if we found what we wanted
 		if(!currentpack.equals("0")){
 			Log.debug("Starting download of ModPack " + currentpack);
 			ModpackInstaller.install(currentpack);
-			
+			//Just to test
+			try {
+				ModpackInstaller.getMod(currentpack);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			RelaunchMinecraft.doTask();
 		}else{
 			Log.debug("No valid modpack ID found or is 0. Starting normal minecraft");
 			RelaunchMinecraft.doTask();
