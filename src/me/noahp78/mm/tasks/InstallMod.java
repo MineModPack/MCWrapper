@@ -1,15 +1,18 @@
 package me.noahp78.mm.tasks;
 
 import me.noahp78.mm.Log;
+import me.noahp78.mm.api.APIHelper;
+import me.noahp78.mm.api.Mod;
+import me.noahp78.mm.api.mod_version;
 
 public class InstallMod {
 	/** Install mod ID
 	 * 
 	 * @param id the version to install
 	 */
-	public static void DoTask(int mod, int version){
+	public static void DoTask(String mod, int version){
 		InstallDependencies(mod,version);
-		
+		InstallMod(mod,version);
 		
 		
 		
@@ -21,7 +24,7 @@ public class InstallMod {
 	 * @author noah
 	 * @param id
 	 */
-	public static void InstallDependencies(int mod, int version){
+	public static void InstallDependencies(String mod, int version){
 		Log.debug("starting dependency resolving for Version " + version + " from mod " + mod);
 		
 		
@@ -29,7 +32,23 @@ public class InstallMod {
 		
 		
 	}
-	private static void InstallMod(int mod, int version, int modtype){
+	public static void InstallMod(String mod, int version){
+		try {
+			Mod m = APIHelper.getMod(mod);
+			mod_version install = m.versions[version];
+			Log.debug("[InstallMod] Installing v" + install.name + " from mod " + m.mod_name);
+			//TODO download code and stuff
+			if(m.mod_installtype=="1"){
+				//This is a mod that has to be patched to the Minecraft Jar
+				Log.debug("[InstallMod] " + m.mod_name + " is going to be patched in the Minecraft Jar") ;
+			}else{
+				Log.debug("[InstallMod] " + m.mod_name + " is going to be put in the mods directory");
+				//This is a mod that goes in the jar directory!
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		
 		
