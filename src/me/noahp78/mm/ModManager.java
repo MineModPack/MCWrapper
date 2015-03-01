@@ -58,10 +58,15 @@ public class ModManager {
 			//Simple check to see if we found what we wanted
 			if(!currentpack.equals("0")){
 				Log.debug("Starting download of ModPack " + currentpack);
-				ModpackInstaller.install(currentpack);
+				try {
+					ModpackInstaller.install(currentpack);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				
 				//Just to test
-				try {
+				/*try {
 					ModpackInstaller.getMod(currentpack);
 					InstallMod.InstallMod("2", 0);
 				} catch (Exception e) {
@@ -69,6 +74,7 @@ public class ModManager {
 					e.printStackTrace();
 				}
 				RelaunchMinecraft.doTask();
+			*/
 			}else{
 				Log.debug("No valid modpack ID found or is 0. Starting normal minecraft");
 				RelaunchMinecraft.doTask();
