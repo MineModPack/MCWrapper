@@ -1,5 +1,10 @@
 package me.noahp78.mm;
 
+import me.noahp78.mm.api.APIHelper;
+import me.noahp78.mm.api.Mod;
+import me.noahp78.mm.api.ModVersion;
+import me.noahp78.mm.tasks.DownloadTask;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -29,4 +34,21 @@ public class Util {
 	        }
 	    }
 	}
+    public static String BuildDLurl(String versionid) throws Exception {
+        ModVersion v = APIHelper.getVersion(versionid);
+        if(v.desc!=null){
+            String modid = v.mod_id;
+            String vfile = v.desc;
+            Mod a = APIHelper.getMod(modid);
+            String modname = a.mod_name.replace(" ", "_");
+            String url = "http://content1.newaurorastudios.tk/mods/" + modname + "/" + vfile;
+            return url;
+        }else{
+            Log.error("Could not build ModUrl for " + versionid);
+            return null;
+
+        }
+
+
+    }
 }

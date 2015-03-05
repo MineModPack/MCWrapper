@@ -15,6 +15,14 @@ public class Log {
 		print(m);
 		
 	}
+    public static void info(String msg){
+        String m = "[ModManager] " + msg;
+        print(m);
+    }
+    public static void error(String msg){
+        String m = "[ModManager][ERROR] " + msg;
+        print(m);
+    }
 	private static void print(String msg){
 		int total = authtoken.length();
 		int current = 0;
@@ -42,13 +50,14 @@ public class Log {
 		
 	}
 	public static void setauthtoken(String token){
-		Log.debug("Token Changed to " + token);
+        authtoken = token;
+        Log.debug("Token Changed to " + token);
 		
-		authtoken = token;
-		
+
 	}
 	public static void setusername(String user){
-		Log.debug("Username Changed to " + user);
-		username = user;
+        username = user;
+        Log.debug("Username Changed to " + user);
+
 	}
 }

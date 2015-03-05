@@ -22,8 +22,8 @@ public class ModZip {
     }
 /** Merge 2 zip files together
  * 
- * @param path Minecraft Jar
- * @param newpath Path to whatever to put in it
+ * @param path Minecraft Jar + path
+ * @param newpath Mod jar/zip + path
  * @throws Exception
  */
     public static void patch(String path, String newpath) throws Exception {
@@ -42,9 +42,8 @@ public class ModZip {
 
             String name = e.getName();
             if(newZip.getEntry(name) == null) {
-                System.out.println("copy: " + e.getName());
+                Log.debug("Copying " +  e.getName());
                 moddedZip.putNextEntry(e);
-                System.out.println("putnextEntry done");
                 if (!e.isDirectory()) {
                     copy(originalZip.getInputStream(e), moddedZip);
                 }
@@ -58,9 +57,10 @@ public class ModZip {
         System.out.println(newentries);
         while (newentries.hasMoreElements()) {
             ZipEntry e = newentries.nextElement();
-            System.out.println("append: " + e.getName());
+            //System.out.println("append: " + e.getName());
+            Log.debug("Adding " + e.getName());
             moddedZip.putNextEntry(e);
-            System.out.println("putnextEntry done");
+            //System.out.println("putnextEntry done");
             if (!e.isDirectory()) {
                 copy(newZip.getInputStream(e), moddedZip);
             }
@@ -73,6 +73,7 @@ public class ModZip {
         originalZip.close();
         newZip.close();
         moddedZip.close();
-        System.out.println("all done");
+        Log.info("Putting mod in jar is done!");
+
     }
 }
