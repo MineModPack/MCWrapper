@@ -9,6 +9,8 @@ tmp/
 *~.nib
 local.properties
 .settings/
+.idea/
+.out/
 .loadpath
 
 # Eclipse Core

@@ -6,7 +6,6 @@ import java.util.HashMap;
 import me.noahp78.mm.Log;
 import me.noahp78.mm.ModManager;
 import me.noahp78.mm.Util;
-import me.noahp78.mm.WinUtil;
 import me.noahp78.mm.api.APIHelper;
 import me.noahp78.mm.api.Mod;
 import me.noahp78.mm.api.ModVersion;
@@ -21,6 +20,7 @@ public class ModpackInstaller {
 	public static String appdata;
 	public static String moddb = appdata + "//moddb//";
 	public static String mc = appdata +"//.minecraft//";
+    public static String jarfile;
 	
 	/**
 	 *  Holds all installed mods in the format:
@@ -33,14 +33,14 @@ public class ModpackInstaller {
 	public static String mcjar;
 	
 	public static void install(String id) throws Exception{
-		appdata=WinUtil.getappdata();
+		appdata= Util.getappdata();
 		Log.debug("Appdata found in " + appdata);
 		String s = File.separator;
 		mcjard = appdata + s + ".minecraft" + s + "versions" + s + ModManager.mcv + s + ModManager.mcv + ".jar";
 		mcjar = appdata + s + ".minecraft" + s + "versions" + s + "ModManager-" + id + s +"minecraft.jar";
 		Log.debug("Making my own copy of " + mcjard + " and putting it into " + mcjar);
-		
-		
+		jarfile = mcjar;
+
 		Util.copyFile(new File(mcjard), new File(mcjar));
 		
 		Log.debug("Copy made... Let's get installing!");
@@ -57,22 +57,9 @@ public class ModpackInstaller {
 			InstallMod.DoTask(modid, versionid);
 		    
 		}
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
 		Log.debug("Relaunching Minecraft with Modpack installed");
-		
-		
-		
+
 	}
 	
 	
@@ -83,7 +70,5 @@ public class ModpackInstaller {
 		Mod m = g.fromJson(r, Mod.class);
 		Log.debug("ModDetails: " + m.mod_name);
 		return m;
-		
-		
 	}
 }

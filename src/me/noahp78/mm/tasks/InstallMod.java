@@ -1,10 +1,14 @@
 package me.noahp78.mm.tasks;
 
 import me.noahp78.mm.Log;
+import me.noahp78.mm.ModZip;
 import me.noahp78.mm.Util;
 import me.noahp78.mm.api.APIHelper;
 import me.noahp78.mm.api.Mod;
 import me.noahp78.mm.api.ModVersion;
+import me.noahp78.mm.api.mod_version;
+
+import java.io.File;
 
 public class InstallMod {
 	/** Install mod ID
@@ -14,10 +18,6 @@ public class InstallMod {
 	public static void DoTask(String mod, String versionid){
 		InstallDependencies(mod,versionid);
 		InstallMod(mod,versionid);
-		
-		
-		
-		
 	}
 	
 	
@@ -27,38 +27,47 @@ public class InstallMod {
 	 */
 	public static void InstallDependencies(String mod, String version){
 		Log.debug("starting dependency resolving for Version " + version + " from mod " + mod);
+        try {
+            ModVersion M = APIHelper.getVersion(version);
+            for (String a : M.depends){
+                InstallMod(mod,a);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
-		
-		
-		
-		
-	}
-	public static void InstallMod(String mod, String version){
-		try {
-			Mod m = APIHelper.getMod(mod);
-			ModVersion install = APIHelper.getVersion(version);
+    }
+	public static void InstallMod(String mod, String version) {
+        if (!(ModpackInstaller.installedmods.containsKey(version))) {
+            try {
+                Mod m = APIHelper.getMod(mod);
+                ModVersion install = APIHelper.getVersion(version);
 
-			Log.debug("[InstallMod] Installing v" + install.name + " from mod " + m.mod_name);
-			//TODO download code and stuff
-            String ModLoc = DownloadTask.makeModLoc(install.name, m.mod_name);
-            DownloadTask.DownloadMod(Util.BuildDLurl(version), ModLoc);
+                Log.debug("[InstallMod] Installing v" + install.name + " from mod " + m.mod_name);
+                //TODO download code and stuff
+                String ModLoc = DownloadTask.makeModLoc(install.name, m.mod_name);
+                DownloadTask.DownloadMod(Util.BuildDLurl(version), ModLoc);
+                if (install.installtype == 1) {
+                    //This is a mod that has to be patched to the Minecraft Jar
+                    Log.debug("[InstallMod] " + m.mod_name + " is going to be patched in the Minecraft Jar");
+                    ModZip.patch(ModLoc,ModpackInstaller.jarfile);
+                } else {
+                    Log.debug("[InstallMod] " + m.mod_name + " is going to be put in the mods directory");
+                    //This is a mod that goes in the jar directory!
+                    String s = File.separator;
+                    String moddir = Util.getappdata() + s + ".minecraft" + s + "mods + s" + install.desc;
+                    new File(moddir).mkdirs();
+                    Util.copyFile(new File(ModLoc),new File(moddir));
+                }
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                Log.error("Could not install version " + version + " from " + mod);
+                e.printStackTrace();
+            }
 
 
-
-            if(install.installtype==1){
-				//This is a mod that has to be patched to the Minecraft Jar
-				Log.debug("[InstallMod] " + m.mod_name + " is going to be patched in the Minecraft Jar") ;
-			}else{
-				Log.debug("[InstallMod] " + m.mod_name + " is going to be put in the mods directory");
-				//This is a mod that goes in the jar directory!
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-		
-	}
+        }
+    }
 }

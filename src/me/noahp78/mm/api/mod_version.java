@@ -10,5 +10,7 @@ public class mod_version {
 	public String ID;
 	public String desc;
 	public List depends;
+    public String mcversion;
+
 	
 }

@@ -10,7 +10,7 @@ import java.util.List;
 
 import me.noahp78.mm.Log;
 import me.noahp78.mm.ModManager;
-import me.noahp78.mm.WinUtil;
+import me.noahp78.mm.Util;
 
 public class RelaunchMinecraft {
 	public static boolean relaunchedonce =false;
@@ -27,7 +27,7 @@ public class RelaunchMinecraft {
 		
 		
 		String s = File.separator;
-		String appdata = WinUtil.getappdata() + s+ "."  + "minecraft";
+		String appdata = Util.getappdata() + s+ "."  + "minecraft";
 		
 		
 		//TODO determine if bug (may) be because we could not find a Main class?!?

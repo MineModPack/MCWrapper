@@ -12,7 +12,11 @@ import java.io.IOException;
 import java.nio.channels.FileChannel;
 
 public class Util {
-	public static void copyFile(File sourceFile, File destFile) throws IOException {
+    private static String workingDirectory;
+    //here, we assign the name of the OS, according to Java, to a variable...
+    private static  String OS = (System.getProperty("os.name")).toUpperCase();
+
+    public static void copyFile(File sourceFile, File destFile) throws IOException {
 	    if(!destFile.exists()) {
 	        destFile.createNewFile();
 	    }
@@ -51,4 +55,23 @@ public class Util {
 
 
     }
+
+    public static String getappdata(){
+        //to determine what the workingDirectory is.
+        //if it is some version of Windows
+        if (OS.contains("WIN"))
+        {
+            //it is simply the location of the "AppData" folder
+            workingDirectory = System.getenv("AppData");
+        }
+        //Otherwise, we assume Linux or Mac
+        else
+        {
+            //in either case, we would start in the user's home directory
+            workingDirectory = System.getProperty("user.home");
+            //if we are on a Mac, we are not done, we look for "Application Support"
+            workingDirectory += "/Library/Application Support";
+        }
+        return workingDirectory;
+	}
 }

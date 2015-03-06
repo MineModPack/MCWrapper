@@ -8,5 +8,6 @@ public class Modpack {
 	public String mod_desc;
 	public String mod_creators;
 	public String mod_catagories;
+    public String mod_mcversion;
 	public ModpackVersion[] versions;
 }

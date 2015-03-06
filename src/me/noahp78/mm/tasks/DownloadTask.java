@@ -1,7 +1,7 @@
 package me.noahp78.mm.tasks;
 
 import me.noahp78.mm.Log;
-import me.noahp78.mm.WinUtil;
+import me.noahp78.mm.Util;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -17,19 +17,25 @@ import java.nio.channels.ReadableByteChannel;
  */
 
 public class DownloadTask {
-    public static void DownloadMod(String url, String path){
-        //TODO: Make some cool downloading code
-        Log.info("Downloading " + url);
-        try {
-            DownloadFile(url, path);
-        } catch (IOException e) {
-            Log.error("There was a error downloading " + url);
-            e.printStackTrace();
+    public static void DownloadMod(String url, String path) {
+        File f = new File(path);
+        if (!(f.exists())) {
+            //TODO: Make some cool downloading code
+            Log.info("Downloading " + url);
+            try {
+                DownloadFile(url, path);
+            } catch (IOException e) {
+                Log.error("There was a error downloading " + url);
+                e.printStackTrace();
+            }
+        }else{
+            Log.info("We alread have a local copy of " + url);
+
         }
     }
 
     private static void DownloadFile(String url, String fileloc) throws IOException {
-        URL website = new URL("http://www.website.com/information.asp");
+        URL website = new URL(url);
         ReadableByteChannel rbc = Channels.newChannel(website.openStream());
         FileOutputStream fos = new FileOutputStream(fileloc);
         fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
@@ -42,9 +48,9 @@ public class DownloadTask {
      * @return
      */
     public static String makeModLoc(String modname, String versionid){
-        String appdata = WinUtil.getappdata();
+        String appdata = Util.getappdata();
         String s = File.separator;
-        appdata = appdata + s + "ModManager" + s + "mods" + s + modname +s +  versionid ;
+        appdata = appdata + s + "ModManager" + s + "mods" + s + modname +s +  versionid + ".zip" ;
         return appdata;
     }
 }
