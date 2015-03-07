@@ -8,6 +8,7 @@ public class ModManager {
 	public static String currentpack = "0";
 	public static String mcv = "";
 	public static String argline = "";
+    public static String cp = RelaunchMinecraft.getclasspath();
 	public static void main(String[] args){
 		
 		Log.debug("Starting ModManager V1");
@@ -29,7 +30,7 @@ public class ModManager {
 				Log.debug("Just going to (try) relaunching minecraft");
 				justrelaunch = true;
 				
-			}else if(a.contains("mod-mc_default")){
+			}else if(a.contains("mod-mcdefault")){
 				mcv = args[(curarg+1)];
 				Log.debug("Default Minecraft Version determined: " + mcv);
 			}else if(a.contains("mod-forge")){
@@ -58,24 +59,15 @@ public class ModManager {
 			//Simple check to see if we found what we wanted
 			if(!currentpack.equals("0")){
 				Log.debug("Starting download of ModPack " + currentpack);
-				try {
-					ModpackInstaller.install(currentpack);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				//Just to test
-				/*try {
-					ModpackInstaller.getMod(currentpack);
-					InstallMod.InstallMod("2", 0);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				RelaunchMinecraft.doTask();
-			*/
-			}else{
+                try {
+                    ModpackInstaller.install(currentpack);
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+                RelaunchMinecraft.doTask();
+            }else{
 				Log.debug("No valid modpack ID found or is 0. Starting normal minecraft");
 				RelaunchMinecraft.doTask();
 			}

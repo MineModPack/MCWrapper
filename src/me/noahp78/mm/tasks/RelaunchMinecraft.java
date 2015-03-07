@@ -36,12 +36,11 @@ public class RelaunchMinecraft {
 		String mcfix2= "";
 		
 		//TODO We need to update this to launch the jar in ModManager-(packid)/minecraft.jar when we are done!
-		String jarlocation = appdata + s +"versions"+ s + ModManager.mcv + s + ModManager.mcv + ".jar ";
+		String jarlocation = appdata + s +"versions"+ s +  "ModManager-" + ModManager.currentpack + s + "minecraft-modded.jar ";
 		
 		
 		if(trycount==0){
 			mcclasserror=true;
-			
 		}
 		if(mcclasserror){
 			if(trycount==2){
@@ -63,7 +62,8 @@ public class RelaunchMinecraft {
 			}
 			
 		}
-		mcfix = getclasspath();
+		mcfix = ModManager.cp;
+
 		
 
 		String fulljarpath =  mcfix + "" + jarlocation + mcfix2;

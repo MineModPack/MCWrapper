@@ -42,7 +42,7 @@ public class Util {
         ModVersion v = APIHelper.getVersion(versionid);
         if(v.desc!=null){
             String modid = v.mod_id;
-            String vfile = v.desc;
+            String vfile = v.name;
             Mod a = APIHelper.getMod(modid);
             String modname = a.mod_name.replace(" ", "_");
             String url = "http://content1.newaurorastudios.tk/mods/" + modname + "/" + vfile;

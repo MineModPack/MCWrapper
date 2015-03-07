@@ -49,19 +49,15 @@ public class ModpackInstaller {
 		int latestversion = m.versions.length-1;
 		ModpackVersion toinstall = m.versions[latestversion];
 		Log.debug("Determined I need to install " + toinstall.mods.length + " mods from version " + toinstall.desc);
-		
 		for (ModVersion mod : toinstall.mods) {
 			String versionid = mod.id;
 			String modid = mod.mod_id;
 			Log.debug("Installing " + versionid + " from modid" + modid);
 			InstallMod.DoTask(modid, versionid);
-		    
 		}
 
-		Log.debug("Relaunching Minecraft with Modpack installed");
 
-	}
-	
+    }
 	
 	public static Mod getMod(String id) throws Exception{
 		String r = Web.getResult("http://stream1-nas.cloudapp.net/mm/mod.php?id=" + id + "&api");

@@ -30,16 +30,23 @@ public class InstallMod {
         try {
             ModVersion M = APIHelper.getVersion(version);
             for (String a : M.depends){
-                InstallMod(mod,a);
+                ModVersion b = APIHelper.getVersion(a);
+
+                InstallMod(b.mod_id,a);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Log.debug("Dependency resolving for mod " + mod + " is done");
+
 
 
     }
 	public static void InstallMod(String mod, String version) {
+        if(version==null) {
+            return;
+        }
         if (!(ModpackInstaller.installedmods.containsKey(version))) {
             try {
                 Mod m = APIHelper.getMod(mod);
@@ -57,10 +64,11 @@ public class InstallMod {
                     Log.debug("[InstallMod] " + m.mod_name + " is going to be put in the mods directory");
                     //This is a mod that goes in the jar directory!
                     String s = File.separator;
-                    String moddir = Util.getappdata() + s + ".minecraft" + s + "mods + s" + install.desc;
-                    new File(moddir).mkdirs();
+                    String moddir = Util.getappdata() + s + ".minecraft" + s + "mods"+ s + install.desc;
+                    new File(Util.getappdata() + s + ".minecraft" + s + "mods" + s).mkdirs();
                     Util.copyFile(new File(ModLoc),new File(moddir));
                 }
+                ModpackInstaller.installedmods.put(version,true);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 Log.error("Could not install version " + version + " from " + mod);

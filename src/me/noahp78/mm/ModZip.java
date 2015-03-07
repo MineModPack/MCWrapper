@@ -30,35 +30,44 @@ public class ModZip {
         // read the zips
         ZipFile originalZip = new ZipFile(path);
         ZipFile newZip = new ZipFile(newpath);
-
-
+        Log.debug("Patching " + newpath + " into " + path);
         // write the modded zip with new Name
-        ZipOutputStream moddedZip = new ZipOutputStream(new FileOutputStream(path.substring(0, (path.length()-4))+"-modded.jar"));
+        ZipOutputStream moddedZip = new ZipOutputStream(new FileOutputStream(newpath.substring(0, (newpath.length()-4))+"-modded.jar"));
 
         // copy contents from original zip to the modded zip
         Enumeration<? extends ZipEntry> entries = originalZip.entries();
+        int copied = 0;
         while (entries.hasMoreElements()) {
             ZipEntry e = entries.nextElement();
 
             String name = e.getName();
             if(newZip.getEntry(name) == null) {
-                Log.debug("Copying " +  e.getName());
+                copied++;
+
+
+
                 moddedZip.putNextEntry(e);
                 if (!e.isDirectory()) {
                     copy(originalZip.getInputStream(e), moddedZip);
                 }
                 moddedZip.closeEntry();
+                }else{
+                    Log.info("Skipped " + name + " because it has to do with META-INF");
+                }
             }
-        }
 
         // replace the original zip-files with new ones       
 
         Enumeration<? extends ZipEntry> newentries = newZip.entries();
         System.out.println(newentries);
-        while (newentries.hasMoreElements()) {
-            ZipEntry e = newentries.nextElement();
+        int added = 0;
+        while (newentries.hasMoreElements())
+
+    {
+        ZipEntry e = newentries.nextElement();
+        if (!e.getName().contains("META-INF")) {
             //System.out.println("append: " + e.getName());
-            Log.debug("Adding " + e.getName());
+            added++;
             moddedZip.putNextEntry(e);
             //System.out.println("putnextEntry done");
             if (!e.isDirectory()) {
@@ -66,8 +75,9 @@ public class ModZip {
             }
             moddedZip.closeEntry();
         }
+    }
 
-        System.out.println("appending done ");
+        Log.info("Added " + added + " files to minecraft jar and copied " + copied + " files");
 
         // close
         originalZip.close();

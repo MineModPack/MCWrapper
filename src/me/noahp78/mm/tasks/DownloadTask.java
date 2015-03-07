@@ -24,6 +24,7 @@ public class DownloadTask {
             Log.info("Downloading " + url);
             try {
                 DownloadFile(url, path);
+
             } catch (IOException e) {
                 Log.error("There was a error downloading " + url);
                 e.printStackTrace();
@@ -50,7 +51,9 @@ public class DownloadTask {
     public static String makeModLoc(String modname, String versionid){
         String appdata = Util.getappdata();
         String s = File.separator;
-        appdata = appdata + s + "ModManager" + s + "mods" + s + modname +s +  versionid + ".zip" ;
+        String a = appdata + s + "ModManager" + s + "mods" + s + versionid +s;
+        new File(a).mkdirs();
+        appdata = appdata + s + "ModManager" + s + "mods" + s + versionid +s +  modname + ".zip" ;
         return appdata;
     }
 }
